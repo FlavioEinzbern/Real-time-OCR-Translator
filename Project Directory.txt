@@ -1,0 +1,30 @@
+ChromaTranslate/
+├── CMakeLists.txt                       [MODIFIED] Links d3d11, d2d1, dwrite, winhttp, and ONNX Runtime
+├── config.ini                           [MODIFIED] Hotkeys, polling rate, language codes, ONNX paths
+├── models/                              [NEW]      Local PP-OCRv4 ONNX weights & character dictionary
+│   ├── ch_PP-OCRv4_det_infer.onnx       [NEW]      ~4.5 MB Text Detection model
+│   ├── japan_PP-OCRv4_rec_infer.onnx    [NEW]      ~10 MB Text Recognition model (swappable per language)
+│   └── japan_dict.txt                   [NEW]      UTF-8 character dictionary for CTC decoding
+├── external/
+│   └── onnxruntime/                     [NEW]      ONNX Runtime C++ headers and lib/dll (v1.17+)
+├── include/
+│   ├── pch.h                            [MODIFIED] Precompiled headers (Win32, D3D11, D2D1, DWrite, WinRT)
+│   ├── d3dHelpers.h                     [KEPT]     Original Chroma Direct3D 11 device/swapchain helpers
+│   ├── direct3d11.interop.h             [KEPT]     Original Chroma WinRT-to-D3D11 surface interop
+│   ├── capture.interop.h                [KEPT]     Original Chroma HWND/HMONITOR GraphicsCaptureItem interop
+│   ├── Win32WindowEnumeration.h         [KEPT]     Original Chroma active desktop window enumerator
+│   ├── TranslationTypes.h               [NEW]      Shared structs (StagedFrame, TextBlock, Config, ThreadSync)
+│   ├── HotKeyManager.h                  [MODIFIED] Global hotkeys for Continuous Mode vs. On-Demand Trigger
+│   ├── SimpleCapture.h                  [MODIFIED] Frame staging, 64x64 diff gatekeeper, Direct2D AR overlay
+│   ├── PaddleOcrEngine.h                [NEW]      2-thread CPU ONNX Runtime detector/recognizer + Furigana filter
+│   └── TranslationRouter.h              [NEW]      LRU cache + WinHTTP keyless Google gtx & Edge failover
+└── src/
+    ├── main.cpp                         [MODIFIED] Win32 transparent overlay loop & worker thread lifecycle
+    ├── HotKeyManager.cpp                [MODIFIED] Implementation of global hotkey state toggles
+    ├── SimpleCapture.cpp                [MODIFIED] D3D11 staging + Direct2D/DirectWrite text box rendering
+    ├── PaddleOcrEngine.cpp              [NEW]      ONNX tensor pre/post-processing, DBNet boxes & CTC decoder
+    └── TranslationRouter.cpp            [NEW]      WinHTTP batch networking, URL encoding, and JSON parsing
+
+[DELETED FROM ORIGINAL CHROMA REPO]:
+✕ Shaders/Protanopia.hlsl, Deuteranopia.hlsl, Tritanopia.hlsl, Greyscale.hlsl, VertexShader.hlsl
+✕ ShaderLoader / PixelShader compilation modules
